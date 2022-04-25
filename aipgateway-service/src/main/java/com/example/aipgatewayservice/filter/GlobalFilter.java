@@ -1,5 +1,6 @@
-package com.example.apigatewayservice.filter;
+package com.example.aipgatewayservice.filter;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -10,9 +11,9 @@ import reactor.core.publisher.Mono;
 
 @Component
 @Slf4j
-public class CustomFilter extends AbstractGatewayFilterFactory<CustomFilter.Config> {
+public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Config> {
 
-    public CustomFilter(){
+    public GlobalFilter(){
         super(Config.class);
     }
     @Override
@@ -21,17 +22,24 @@ public class CustomFilter extends AbstractGatewayFilterFactory<CustomFilter.Conf
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
 
-            log.info("Custom PRE filter: request id -> {}", request.getId());
+            log.info(" Global Filter baseMessage: {}", config.getBaseMessage());
 
+            if(config.isPreLogger()){
+                log.info(" Global Filter start: request id-> {}", request.getId());
+            }
             // Custom Post Filter
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-                log.info("Custom POST filter: response code -> {}", response.getStatusCode());
+                log.info(" Global Filter End: response code-> {}", response.getStatusCode());
             }));
         };
     }
 
 
+    // 설정은 application.yml에서 한다.
+    @Data
     public static class Config{
-        //put the configuration properties
+        private String baseMessage;
+        private boolean preLogger;
+        private boolean postLoggeer;
     }
 }
