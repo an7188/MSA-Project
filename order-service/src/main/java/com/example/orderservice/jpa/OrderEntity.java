@@ -19,7 +19,7 @@ public class OrderEntity implements Serializable  {
     private String productId;
     @Column(nullable = false)
     private Integer qty;
-    @Column(nullable = false)
+    @Column(nullable = false) // 단가
     private Integer unitPrice;
     @Column(nullable = false)
     private Integer totalPrice;
