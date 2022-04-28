@@ -8,6 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.modelmapper.spi.MatchingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
+//Override Methods -  기능이 구현된 메소드를 변경해서 씀
+//Implement Methods - 선언만 된 메소드를 구현
 @Service
 public class UserServiceImpl implements UserService{
 
@@ -62,5 +67,17 @@ public class UserServiceImpl implements UserService{
     @Override
     public Iterable<UserEntity> getUserByAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity userEntity = userRepository.findByEmail(username);
+        if (userEntity == null) // 사용자가 없을경우
+            throw new UsernameNotFoundException(username + ": not found");
+        //UserDetails은 User로 반환
+        return new User(userEntity.getEmail(), userEntity.getEncryptedPwd(),
+                true, true, true, true,
+                new ArrayList<>());
+
     }
 }

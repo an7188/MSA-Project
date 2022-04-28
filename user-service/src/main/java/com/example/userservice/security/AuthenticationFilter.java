@@ -20,15 +20,15 @@ import java.util.ArrayList;
 
 @Slf4j
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private UserService userService;
-    private Environment env;
-
-
-    public AuthenticationFilter(AuthenticationManager authenticationManager, UserService userService, Environment env) {
-        super(authenticationManager);
-        this.userService = userService;
-        this.env = env;
-    }
+//    private UserService userService;
+//    private Environment env;
+//
+//
+//    public AuthenticationFilter(AuthenticationManager authenticationManager, UserService userService, Environment env) {
+//        super(authenticationManager);
+//        this.userService = userService;
+//        this.env = env;
+//    }
 
     // 입력 받은 아이디와 비밀 번호를 받아 인증 정보 만듬
     @Override
@@ -36,11 +36,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         try {
             // 질문!
             RequestLogin creds = new ObjectMapper().readValue(request.getInputStream(), RequestLogin.class);
-
+// 매니저가 만들어진 토큰으로 인증 처리
             return getAuthenticationManager().authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            creds.getEmail(),
-                            creds.getPassword(),
+                    new UsernamePasswordAuthenticationToken(// 토큰을 만들어줌
+                            creds.getEmail(), // 이메일과
+                            creds.getPassword(), //패스워드를 넘기면
                             new ArrayList<>()
                     )
             );

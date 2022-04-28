@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user-service/")
+@RequestMapping("/")
 public class UserController {
 
 //    @Autowired application.yml에 파일을 이용할 수 있는 방법 1
