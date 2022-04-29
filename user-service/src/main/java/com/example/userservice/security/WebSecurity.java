@@ -29,7 +29,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/**")
-                .hasIpAddress("http://192.168.35.143/") // <- IP 변경
+                .hasIpAddress("192.168.35.143") // <- IP 변경
                 .and()
                 .addFilter(getAuthenticationFilter()); // 이 필터를 통과 해야지만 권한 작업을 실행
         http.headers().frameOptions().disable();
