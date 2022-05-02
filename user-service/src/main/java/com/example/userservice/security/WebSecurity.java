@@ -28,6 +28,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override // 권한에 대한 메소드
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
+        http.authorizeRequests().antMatchers("/actuator/**").permitAll();
         http.authorizeRequests().antMatchers("/**")
                 .hasIpAddress("192.168.35.143") // <- IP 변경
                 .and()
