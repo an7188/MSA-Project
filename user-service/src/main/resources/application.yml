@@ -16,6 +16,7 @@ spring:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:testdb
 
+# eureka 등록
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
@@ -36,7 +37,9 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans
+        include: refresh, health, beans,busrefresh
+#  refresh -> 설정 정보를 갱신  , health -> 어플리케이션 자체 상태 , beans
+
 #token:
 #  expiration_time: 86400000
 #  secret: user_token
