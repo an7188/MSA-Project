@@ -1,4 +1,38 @@
 package com.example.userservice.error;
 
-public class FeignErrorDecoder {
+import feign.Response;
+import feign.codec.ErrorDecoder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
+
+@Component
+public class FeignErrorDecoder implements ErrorDecoder {
+    Environment env;
+    @Autowired
+    public FeignErrorDecoder(Environment env) {
+        this.env = env;
+    }
+
+
+    @Override                // 오류가 생긴 메소드 이름과, 상태코드
+    public Exception decode(String methodKey, Response response) {
+        switch(response.status()) {
+            case 400:
+                break;
+            case 404: // API 주소값 틀렸을때
+                if (methodKey.contains("getOrders")) {
+                    return new ResponseStatusException(HttpStatus.valueOf(response.status()),
+                            env.getProperty("order_service.exception.orders_is_empty"));
+                }
+                break;
+            default:
+                return new Exception(response.reason());
+        }
+
+        return null;
+    }
+
 }

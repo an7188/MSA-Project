@@ -1,0 +1,7 @@
+# 암호회 설정( 이걸 키로 쓰겠다)
+encrypt:
+#  key: abcdefghijklmnopqrstuvwsyz0123456789
+  key-store:
+    location: file://${user.home}/GIT/keystore/apiEncryptionKey.jks
+    password: test1234
+    alias: apiEncryptionKey
