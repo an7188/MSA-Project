@@ -58,6 +58,7 @@ public class OrderController {
     }
 
     // 사용자 한명당 여러개의 주문을 하니까 List반환
+
     @GetMapping("/{userId}/orders")
     public ResponseEntity<List<ResponseOrder>> getOrder(@PathVariable("userId") String userId) throws Exception {
         log.info("Before retrieve orders data");
