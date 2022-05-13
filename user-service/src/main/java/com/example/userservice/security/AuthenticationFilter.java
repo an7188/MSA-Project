@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
+//UsernamePasswordAuthenticationFilter -> 인증처리 담 -> attemptAuthentication 호출
 @Slf4j
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private UserService userService;
