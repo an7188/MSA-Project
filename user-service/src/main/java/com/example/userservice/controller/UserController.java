@@ -6,6 +6,7 @@ import com.example.userservice.service.UserService;
 import com.example.userservice.vo.Greeting;
 import com.example.userservice.vo.RequestUser;
 import com.example.userservice.vo.ResponseUser;
+import io.micrometer.core.annotation.Timed;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/health_check")
+    @Timed(value = "users.status", longTask = true)
     public String status(){
 //        return "It's Working in User service";
         return String.format("It's Working in User Service"
@@ -45,6 +47,7 @@ public class UserController {
                 + ", token expiration time=" + env.getProperty("token.expiration_time"));
     }
 
+    @Timed(value = "users.welcome", longTask = true)
     @GetMapping("/welcome")
     public String welcome(){
 //        return env.getProperty("greeting.message");

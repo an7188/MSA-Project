@@ -100,11 +100,11 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
-<!--        &lt;!&ndash; resilience4j &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>-->
-<!--        </dependency>-->
+<!--       resilence4j-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+        </dependency>
 
 <!--        &lt;!&ndash; zipkin &ndash;&gt;-->
 <!--        &lt;!&ndash;        <dependency>&ndash;&gt;-->
@@ -117,10 +117,10 @@
 <!--        &lt;!&ndash;            <version>2.2.3.RELEASE</version>&ndash;&gt;-->
 <!--        &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--        <dependency>-->
-<!--            <groupId>io.micrometer</groupId>-->
-<!--            <artifactId>micrometer-registry-prometheus</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

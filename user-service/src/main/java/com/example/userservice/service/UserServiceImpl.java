@@ -11,6 +11,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.modelmapper.spi.MatchingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
@@ -40,13 +42,15 @@ public class UserServiceImpl implements UserService{
     RestTemplate restTemplate;
     //   @Autowired거보다 생성자를 만들어서 주입하는게 더 좋음
     OrderServiceClient orderServiceClient;
+    CircuitBreakerFactory circuitBreakerFactory;
 
-    public UserServiceImpl(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository, Environment env, RestTemplate restTemplate, OrderServiceClient orderServiceClient) {
+    public UserServiceImpl(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository, Environment env, RestTemplate restTemplate, OrderServiceClient orderServiceClient, CircuitBreakerFactory circuitBreakerFactory) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.env = env;
         this.restTemplate = restTemplate;
         this.orderServiceClient = orderServiceClient;
+        this.circuitBreakerFactory = circuitBreakerFactory;
     }
 
     @Override
@@ -92,8 +96,12 @@ public class UserServiceImpl implements UserService{
 //        } catch (FeignException ex) {
 //            log.error(ex.getMessage());
 //        }
-        List<ResponseOrder> ordersList = orderServiceClient.getOrders(userId);
+//        List<ResponseOrder> ordersList = orderServiceClient.getOrders(userId);
 
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitbreaker");
+        List<ResponseOrder> ordersList = circuitBreaker.run(() -> orderServiceClient.getOrders(userId),
+                throwable -> new ArrayList<>());
+        log.info("After called orders microservice");
         userDto.setOrders(ordersList);
         return userDto;
     }
